@@ -5,11 +5,9 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Color Rush</title>
-
 
 <style>
 
@@ -17,21 +15,14 @@ content="width=device-width, initial-scale=1.0">
     box-sizing: border-box;
 }
 
-
 body {
-
     margin: 0;
-
     min-height: 100vh;
-
     font-family: Arial, sans-serif;
-
     color: white;
 
     display: flex;
-
     justify-content: center;
-
     align-items: center;
 
     padding: 15px;
@@ -43,69 +34,524 @@ body {
             #312e81,
             #581c87
         );
-
 }
 
-
 .game {
-
     width: 100%;
-
     max-width: 650px;
 
     padding: 20px;
 
     border-radius: 28px;
 
-    background:
-        rgba(0,0,0,.25);
+    background: rgba(0,0,0,.25);
 
     box-shadow:
         0 20px 50px rgba(0,0,0,.35);
-
 }
 
-
 .header {
-
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
 
     gap: 15px;
-
     flex-wrap: wrap;
-
 }
-
 
 h1 {
-
     margin: 0;
-
     font-size: 28px;
-
 }
-
 
 .subtitle {
-
     margin-top: 5px;
-
     opacity: .7;
-
 }
 
-
 .start {
-
     border: 0;
-
     border-radius: 14px;
 
     padding: 13px 20px;
+
+    font-weight: bold;
+    font-size: 15px;
+
+    color: white;
+
+    cursor: pointer;
+
+    background:
+        linear-gradient(
+            90deg,
+            #22d3ee,
+            #ec4899
+        );
+}
+
+.start:disabled {
+    opacity: .6;
+    cursor: default;
+}
+
+.stats {
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 20px;
+
+    flex-wrap: wrap;
+}
+
+.stat {
+    flex: 1;
+
+    min-width: 85px;
+
+    padding: 12px;
+
+    text-align: center;
+
+    border-radius: 16px;
+
+    background: rgba(255,255,255,.1);
+
+    border:
+        1px solid rgba(255,255,255,.15);
+}
+
+.label {
+    font-size: 11px;
+
+    opacity: .7;
+
+    letter-spacing: 1px;
+}
+
+.value {
+    font-size: 26px;
+
+    font-weight: bold;
+
+    margin-top: 4px;
+}
+
+.status {
+    text-align: center;
+
+    margin: 16px 0 10px;
+
+    min-height: 20px;
+
+    opacity: .9;
+}
+
+.arena {
+    height: 390px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 22px;
+
+    border:
+        1px solid rgba(255,255,255,.15);
+
+    background:
+
+        radial-gradient(
+            circle at 30% 20%,
+            rgba(34,211,238,.18),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(236,72,153,.2),
+            transparent 30%
+        ),
+
+        rgba(0,0,0,.2);
+}
+
+.target {
+    position: absolute;
+
+    border: 0;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+
+    animation:
+        pulse .5s infinite alternate;
+}
+
+.target:active {
+    transform: scale(.7);
+}
+
+@keyframes pulse {
+
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.08);
+    }
+
+}
+
+.timer {
+    position: absolute;
+
+    top: 10px;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    background: rgba(0,0,0,.35);
+
+    z-index: 5;
+}
+
+.game-over {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    padding: 20px;
+
+    background: rgba(0,0,0,.78);
+
+    border-radius: 22px;
+
+    z-index: 10;
+}
+
+.game-over h2 {
+    font-size: 42px;
+
+    margin: 0 0 10px;
+}
+
+.game-over p {
+    font-size: 18px;
+
+    margin: 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+@media(max-width:500px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .game {
+        padding: 15px;
+    }
+
+    .arena {
+        height: 350px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .start {
+        width: 100%;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="game">
+
+    <div class="header">
+
+        <div>
+
+            <h1>🎯 Color Rush</h1>
+
+            <div class="subtitle">
+                Tocá el círculo antes de que se acabe el tiempo.
+            </div>
+
+        </div>
+
+        <button
+            id="start"
+            class="start"
+            type="button"
+        >
+            EMPEZAR
+        </button>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <div class="label">
+                PUNTOS
+            </div>
+
+            <div
+                id="score"
+                class="value"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="label">
+                NIVEL
+            </div>
+
+            <div
+                id="level"
+                class="value"
+            >
+                1
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="label">
+                RÉCORD
+            </div>
+
+            <div
+                id="best"
+                class="value"
+            >
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="status"
+        class="status"
+    >
+        Empezá en el nivel 1
+    </div>
+
+
+    <div
+        id="arena"
+        class="arena"
+    >
+
+        <div
+            id="timer"
+            class="timer"
+        >
+            ⏱️ 3.0
+        </div>
+
+
+        <div
+            id="gameOver"
+            class="game-over hidden"
+        >
+
+            <h2 id="gameOverTitle">
+                💀 GAME OVER
+            </h2>
+
+            <p id="finalScore">
+                Puntuación: 0
+            </p>
+
+            <p id="finalLevel">
+                Nivel: 1
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const arena =
+    document.getElementById("arena");
+
+const start =
+    document.getElementById("start");
+
+const scoreElement =
+    document.getElementById("score");
+
+const levelElement =
+    document.getElementById("level");
+
+const bestElement =
+    document.getElementById("best");
+
+const statusElement =
+    document.getElementById("status");
+
+const timerElement =
+    document.getElementById("timer");
+
+const gameOverElement =
+    document.getElementById("gameOver");
+
+const gameOverTitle =
+    document.getElementById("gameOverTitle");
+
+const finalScore =
+    document.getElementById("finalScore");
+
+const finalLevel =
+    document.getElementById("finalLevel");
+
+
+let score = 0;
+
+let level = 1;
+
+let best = 0;
+
+let playing = false;
+
+let target = null;
+
+let timerInterval = null;
+
+let timeLeft = 0;
+
+
+const colors = [
+
+    [
+        "#ec4899",
+        "rgba(236,72,153,.2)"
+    ],
+
+    [
+        "#22d3ee",
+        "rgba(34,211,238,.2)"
+    ],
+
+    [
+        "#facc15",
+        "rgba(250,204,21,.2)"
+    ],
+
+    [
+        "#a78bfa",
+        "rgba(167,139,250,.2)"
+    ],
+
+    [
+        "#34d399",
+        "rgba(52,211,153,.2)"
+    ],
+
+    [
+        "#fb7185",
+        "rgba(251,113,133,.2)"
+    ]
+
+];
+
+
+/*
+TIEMPO POR NIVEL
+
+1 = 3.0 segundos
+2 = 3.0 segundos
+3 = 2.5 segundos
+4 = 2.5 segundos
+5 = 2.0 segundos
+6 = 2.0 segundos
+7 = 1.5 segundos
+8 = 1.5 segundos
+9 = 1.2 segundos
+10 = 1.0 segundo
+*/
+
+function getTimeForLevel() {
+
+    const times = [
+        3.0,
+        3.0,
+        2.5,
+        2.5,
+        2.0,
+        2.0,
+        1.5,
+        1.5,
+        1.2,
+        1.0
+    ];
+
+    return times[level - 1];
+
+}
+
+
+/*
+TAMAÑO DEL CÍRCULO
+*/
+
+function getSizeForLevel() {
+
+    return Math.max(
+        32,
+        65 - (level    padding: 13px 20px;
 
     font-weight: bold;
 
