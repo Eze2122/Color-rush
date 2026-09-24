@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color Rush</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #111827, #312e81, #581c87);
+}
+
+.game {
+    width: 100%;
+    max-width: 650px;
+    padding: 20px;
+    border-radius: 28px;
+    background: rgba(0, 0, 0, 0.25);
+    box-shadow: 0 20px 50px rgba(0,0,0,.35);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.subtitle {
+    margin-top: 5px;
+    opacity: .7;
+}
+
+button {
+    font-family: inherit;
+}
+
+.start {
+    border: 0;
+    border-radius: 14px;
+    padding: 13px 20px;
+    font-weight: bold;
+    font-size: 15px;
+    color: white;
+    cursor: pointer;
+    background: linear-gradient(90deg, #22d3ee, #ec4899);
+}
+
+.start:disabled {
+    opacity: .6;
+    cursor: default;
+}
+
+.stats {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.stat {
+    flex: 1;
+    min-width: 90px;
+    padding: 12px;
+    text-align: center;
+    border-radius: 16px;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.15);
+}
+
+.label {
+    font-size: 11px;
+    opacity: .7;
+    letter-spacing: 1px;
+}
+
+.value {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 4px;
+}
+
+.status {
+    text-align: center;
+    margin: 16px 0 10px;
+    opacity: .85;
+}
+
+.arena {
+    height: 390px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,.15);
+
+    background:
+        radial-gradient(
+            circle at 30% 20%,
+            rgba(34,211,238,.18),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(236,72,153,.2),
+            transparent 30%
+        ),
+        rgba(0,0,0,.2);
+}
+
+.target {
+    position: absolute;
+    width: 62px;
+    height: 62px;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    touch-action: manipulation;
+
+    animation: pulse .8s infinite alternate;
+}
+
+.target:active {
+    transform: scale(.75);
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.1);
+    }
+}
+
+@media (max-width: 500px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .game {
+        padding: 15px;
+    }
+
+    .arena {
+        height: 350px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .start {
+        width: 100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="game">
+
+    <div class="header">
+
+        <div>
+            <h1>🎯 Color Rush</h1>
+            <div class="subtitle">
+                Tocá el círculo lo más rápido posible.
+            </div>
+        </div>
+
+        <button id="start" class="start">
+            EMPEZAR
+        </button>
+
+    </div>
+
+    <div class="stats">
+
+        <div class="stat">
+            <div class="label">PUNTOS</div>
+            <div id="score" class="value">0</div>
+        </div>
+
+        <div class="stat">
+            <div class="label">TIEMPO</div>
+            <div id="time" class="value">20</div>
+        </div>
+
+        <div class="stat">
+            <div class="label">RÉCORD</div>
+            <div id="best" class="value">0</div>
+        </div>
+
+    </div>
+
+    <div id="status" class="status">
+        ¿Podés superar tu récord?
+    </div>
+
+    <div id="arena" class="arena"></div>
+
+</div>
+
+
+<script>
+
+const arena = document.getElementById("arena");
+const start = document.getElementById("start");
+
+const scoreElement = document.getElementById("score");
+const timeElement = document.getElementById("time");
+const bestElement = document.getElementById("best");
+const statusElement = document.getElementById("status");
+
+let score = 0;
+let time = 20;
+let best = 0;
+let timer = null;
+let playing = false;
+
+
+const colors = [
+
+    ["#ec4899", "rgba(236,72,153,.2)"],
+    ["#22d3ee", "rgba(34,211,238,.2)"],
+    ["#facc15", "rgba(250,204,21,.2)"],
+    ["#a78bfa", "rgba(167,139,250,.2)"],
+    ["#34d399", "rgba(52,211,153,.2)"],
+    ["#fb7185", "rgba(251,113,133,.2)"]
+
+];
+
+
+function createTarget() {
+
+    let target = arena.querySelector(".target");
+
+    if (!target) {
+
+        target = document.createElement("button");
+
+        target.className = "target";
+
+        target.setAttribute(
+            "aria-label",
+            "Objetivo"
+        );
+
+        target.addEventListener(
+            "click",
+            hitTarget
+        );
+
+        arena.appendChild(target);
+    }
+
+
+    const color =
+        colors[
+            Math.floor(
+                Math.random() * colors.length
+            )
+        ];
+
+
+    const size = 62;
+    const padding = 8;
+
+
+    const maxX =
+        arena.clientWidth -
+        size -
+        padding * 2;
+
+
+    const maxY =
+        arena.clientHeight -
+        size -
+        padding * 2;
+
+
+    const x =
+        padding +
+        Math.random() * Math.max(1, maxX);
+
+
+    const y =
+        padding +
+        Math.random() * Math.max(1, maxY);
+
+
+    target.style.left = x + "px";
+    target.style.top = y + "px";
+
+    target.style.background = color[0];
+
+    target.style.boxShadow =
+        "0 0 0 7px " +
+        color[1] +
+        ", 0 0 28px " +
+        color[0] +
+        "aa";
+}
+
+
+function hitTarget() {
+
+    if (!playing) {
+        return;
+    }
+
+    score++;
+
+    scoreElement.textContent = score;
+
+    createTarget();
+}
+
+
+function finishGame() {
+
+    playing = false;
+
+    clearInterval(timer);
+
+    timer = null;
+
+    const target =
+        arena.querySelector(".target");
+
+    if (target) {
+        target.remove();
+    }
+
+
+    if (score > best) {
+
+        best = score;
+
+        bestElement.textContent = best;
+
+        statusElement.textContent =
+            "🏆 ¡NUEVO RÉCORD! Hiciste " +
+            score +
+            " puntos.";
+
+    } else {
+
+        statusElement.textContent =
+            "⏱️ Fin. Hiciste " +
+            score +
+            " puntos. ¡Intentá superar el récord!";
+    }
+
+
+    start.disabled = false;
+
+    start.textContent = "JUGAR DE NUEVO";
+}
+
+
+start.addEventListener(
+    "click",
+    function() {
+
+        if (playing) {
+            return;
+        }
+
+
+        score = 0;
+        time = 20;
+
+
+        scoreElement.textContent = "0";
+        timeElement.textContent = "20";
+
+
+        statusElement.textContent =
+            "¡Rápido!";
+
+
+        playing = true;
+
+
+        start.disabled = true;
+
+        start.textContent = "JUGANDO…";
+
+
+        createTarget();
+
+
+        clearInterval(timer);
+
+
+        timer = setInterval(
+            function() {
+
+                time--;
+
+                timeElement.textContent = time;
+
+
+                if (time <= 0) {
+
+                    finishGame();
+
+                }
+
+            },
+            1000
+        );
+
+    }
+);
+
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        if (playing) {
+            createTarget();
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
