@@ -551,598 +551,17 @@ function getSizeForLevel() {
 
     return Math.max(
         32,
-        65 - (level    padding: 13px 20px;
-
-    font-weight: bold;
-
-    font-size: 15px;
-
-    color: white;
-
-    cursor: pointer;
-
-    background:
-        linear-gradient(
-            90deg,
-            #22d3ee,
-            #ec4899
-        );
-
-}
-
-
-.start:disabled {
-
-    opacity: .6;
-
-    cursor: default;
-
-}
-
-
-.stats {
-
-    display: flex;
-
-    gap: 10px;
-
-    margin-top: 20px;
-
-    flex-wrap: wrap;
-
-}
-
-
-.stat {
-
-    flex: 1;
-
-    min-width: 85px;
-
-    padding: 12px;
-
-    text-align: center;
-
-    border-radius: 16px;
-
-    background:
-        rgba(255,255,255,.1);
-
-    border:
-        1px solid rgba(255,255,255,.15);
-
-}
-
-
-.label {
-
-    font-size: 11px;
-
-    opacity: .7;
-
-    letter-spacing: 1px;
-
-}
-
-
-.value {
-
-    font-size: 26px;
-
-    font-weight: bold;
-
-    margin-top: 4px;
-
-}
-
-
-.status {
-
-    text-align: center;
-
-    margin: 16px 0 10px;
-
-    min-height: 20px;
-
-    opacity: .9;
-
-}
-
-
-.arena {
-
-    height: 390px;
-
-    position: relative;
-
-    overflow: hidden;
-
-    border-radius: 22px;
-
-    border:
-        1px solid rgba(255,255,255,.15);
-
-    background:
-
-        radial-gradient(
-            circle at 30% 20%,
-            rgba(34,211,238,.18),
-            transparent 28%
-        ),
-
-        radial-gradient(
-            circle at 80% 80%,
-            rgba(236,72,153,.2),
-            transparent 30%
-        ),
-
-        rgba(0,0,0,.2);
-
-}
-
-
-.target {
-
-    position: absolute;
-
-    border: 0;
-
-    border-radius: 50%;
-
-    cursor: pointer;
-
-    touch-action: manipulation;
-
-    animation:
-        pulse .5s infinite alternate;
-
-}
-
-
-.target:active {
-
-    transform: scale(.7);
-
-}
-
-
-@keyframes pulse {
-
-    from {
-        transform: scale(1);
-    }
-
-    to {
-        transform: scale(1.08);
-    }
-
-}
-
-
-.timer {
-
-    position: absolute;
-
-    top: 10px;
-
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    font-size: 14px;
-
-    font-weight: bold;
-
-    padding: 6px 12px;
-
-    border-radius: 20px;
-
-    background:
-        rgba(0,0,0,.35);
-
-    z-index: 5;
-
-}
-
-
-.game-over {
-
-    position: absolute;
-
-    inset: 0;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    align-items: center;
-
-    text-align: center;
-
-    padding: 20px;
-
-    background:
-        rgba(0,0,0,.75);
-
-    border-radius: 22px;
-
-    z-index: 10;
-
-}
-
-
-.game-over h2 {
-
-    font-size: 42px;
-
-    margin: 0 0 10px;
-
-}
-
-
-.game-over p {
-
-    font-size: 18px;
-
-    margin: 5px;
-
-}
-
-
-.hidden {
-
-    display: none;
-
-}
-
-
-@media(max-width:500px) {
-
-    body {
-
-        padding: 10px;
-
-    }
-
-
-    .game {
-
-        padding: 15px;
-
-    }
-
-
-    .arena {
-
-        height: 350px;
-
-    }
-
-
-    h1 {
-
-        font-size: 24px;
-
-    }
-
-
-    .start {
-
-        width: 100%;
-
-    }
-
-}
-
-</style>
-
-</head>
-
-
-<body>
-
-
-<div class="game">
-
-
-    <div class="header">
-
-
-        <div>
-
-            <h1>🎯 Color Rush</h1>
-
-            <div class="subtitle">
-
-                Tocá el círculo antes de que se acabe el tiempo.
-
-            </div>
-
-        </div>
-
-
-        <button
-            id="start"
-            class="start"
-            type="button"
-        >
-
-            EMPEZAR
-
-        </button>
-
-    </div>
-
-
-
-    <div class="stats">
-
-
-        <div class="stat">
-
-            <div class="label">
-                PUNTOS
-            </div>
-
-            <div
-                id="score"
-                class="value"
-            >
-                0
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="label">
-                NIVEL
-            </div>
-
-            <div
-                id="level"
-                class="value"
-            >
-                1
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="label">
-                RÉCORD
-            </div>
-
-            <div
-                id="best"
-                class="value"
-            >
-                0
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <div
-        id="status"
-        class="status"
-    >
-
-        Empezá en el nivel 1
-
-    </div>
-
-
-
-    <div
-        id="arena"
-        class="arena"
-    >
-
-        <div
-            id="timer"
-            class="timer"
-        >
-            ⏱️ 3.0
-        </div>
-
-
-        <div
-            id="gameOver"
-            class="game-over hidden"
-        >
-
-            <h2 id="gameOverTitle">
-                💀 GAME OVER
-            </h2>
-
-            <p id="finalScore">
-                Puntuación: 0
-            </p>
-
-            <p id="finalLevel">
-                Nivel: 1
-            </p>
-
-        </div>
-
-    </div>
-
-
-</div>
-
-
-
-<script>
-
-
-const arena =
-    document.getElementById("arena");
-
-
-const start =
-    document.getElementById("start");
-
-
-const scoreElement =
-    document.getElementById("score");
-
-
-const levelElement =
-    document.getElementById("level");
-
-
-const bestElement =
-    document.getElementById("best");
-
-
-const statusElement =
-    document.getElementById("status");
-
-
-const timerElement =
-    document.getElementById("timer");
-
-
-const gameOverElement =
-    document.getElementById("gameOver");
-
-
-const gameOverTitle =
-    document.getElementById("gameOverTitle");
-
-
-const finalScore =
-    document.getElementById("finalScore");
-
-
-const finalLevel =
-    document.getElementById("finalLevel");
-
-
-
-let score = 0;
-
-let level = 1;
-
-let best = 0;
-
-let playing = false;
-
-let target = null;
-
-let timerInterval = null;
-
-let timeLeft = 0;
-
-
-
-const colors = [
-
-    [
-        "#ec4899",
-        "rgba(236,72,153,.2)"
-    ],
-
-    [
-        "#22d3ee",
-        "rgba(34,211,238,.2)"
-    ],
-
-    [
-        "#facc15",
-        "rgba(250,204,21,.2)"
-    ],
-
-    [
-        "#a78bfa",
-        "rgba(167,139,250,.2)"
-    ],
-
-    [
-        "#34d399",
-        "rgba(52,211,153,.2)"
-    ],
-
-    [
-        "#fb7185",
-        "rgba(251,113,133,.2)"
-    ]
-
-];
-
-
-
-/*
-    TIEMPO DE CADA NIVEL
-
-    Nivel 1: 3 segundos
-    Nivel 2: 3 segundos
-    Nivel 3: 2.5 segundos
-    Nivel 4: 2.5 segundos
-    Nivel 5: 2 segundos
-    Nivel 6: 2 segundos
-    Nivel 7: 1.5 segundos
-    Nivel 8: 1.5 segundos
-    Nivel 9: 1.2 segundos
-    Nivel 10: 1 segundo
-*/
-
-
-function getTimeForLevel() {
-
-    const times = [
-
-        3.0,
-        3.0,
-        2.5,
-        2.5,
-        2.0,
-        2.0,
-        1.5,
-        1.5,
-        1.2,
-        1.0
-
-    ];
-
-    return times[level - 1];
-
-}
-
-
-
-/*
-    TAMAÑO DEL CÍRCULO
-*/
-
-
-function getSizeForLevel() {
-
-    return Math.max(
-        32,
         65 - (level - 1) * 3
     );
 
 }
 
 
-
 /*
-    CREAR CÍRCULO
+CREAR CÍRCULO
 */
 
-
 function createTarget() {
-
 
     if (!playing) {
         return;
@@ -1164,9 +583,7 @@ function createTarget() {
 
     target.type = "button";
 
-
-    target.className =
-        "target";
+    target.className = "target";
 
 
     target.addEventListener(
@@ -1178,19 +595,15 @@ function createTarget() {
     arena.appendChild(target);
 
 
-
     const size =
         getSizeForLevel();
-
 
 
     target.style.width =
         size + "px";
 
-
     target.style.height =
         size + "px";
-
 
 
     const color =
@@ -1202,24 +615,19 @@ function createTarget() {
         ];
 
 
-
     target.style.background =
         color[0];
 
 
     target.style.boxShadow =
-
         "0 0 0 7px " +
         color[1] +
-
         ", 0 0 30px " +
         color[0] +
         "aa";
 
 
-
     const padding = 8;
-
 
 
     const maxX =
@@ -1228,12 +636,10 @@ function createTarget() {
         padding * 2;
 
 
-
     const maxY =
         arena.clientHeight -
         size -
         padding * 2;
-
 
 
     const x =
@@ -1242,21 +648,17 @@ function createTarget() {
         Math.max(1, maxX);
 
 
-
     const y =
         padding +
         Math.random() *
         Math.max(1, maxY);
 
 
-
     target.style.left =
         x + "px";
 
-
     target.style.top =
         y + "px";
-
 
 
     startTimer();
@@ -1264,14 +666,11 @@ function createTarget() {
 }
 
 
-
 /*
-    TEMPORIZADOR
+TEMPORIZADOR
 */
 
-
 function startTimer() {
-
 
     clearInterval(timerInterval);
 
@@ -1283,17 +682,13 @@ function startTimer() {
     updateTimer();
 
 
-
     timerInterval =
         setInterval(
             function() {
 
-
                 timeLeft -= 0.1;
 
-
                 updateTimer();
-
 
 
                 if (timeLeft <= 0) {
@@ -1306,20 +701,16 @@ function startTimer() {
 
                 }
 
-
             },
             100
-
         );
 
 }
 
 
-
 /*
-    MOSTRAR TIEMPO
+ACTUALIZAR TEMPORIZADOR
 */
-
 
 function updateTimer() {
 
@@ -1333,25 +724,20 @@ function updateTimer() {
 }
 
 
-
 /*
-    CUANDO TOCA EL CÍRCULO
+TOCAR CÍRCULO
 */
 
-
 function hitTarget() {
-
 
     if (!playing) {
         return;
     }
 
 
-
     clearInterval(
         timerInterval
     );
-
 
 
     score++;
@@ -1361,13 +747,6 @@ function hitTarget() {
         score;
 
 
-
-    /*
-        CADA 10 PUNTOS
-        SUBE EL NIVEL
-    */
-
-
     const newLevel =
         Math.min(
             10,
@@ -1375,9 +754,7 @@ function hitTarget() {
         );
 
 
-
     if (newLevel !== level) {
-
 
         level =
             newLevel;
@@ -1387,7 +764,6 @@ function hitTarget() {
             level;
 
 
-
         if (level < 10) {
 
             statusElement.textContent =
@@ -1395,10 +771,7 @@ function hitTarget() {
                 level +
                 "! Ahora tenés menos tiempo.";
 
-        }
-
-
-        else {
+        } else {
 
             statusElement.textContent =
                 "🔥 ¡NIVEL 10! ¡Llegá a 100 puntos!";
@@ -1408,15 +781,7 @@ function hitTarget() {
     }
 
 
-
-    /*
-        100 PUNTOS = VICTORIA
-    */
-
-
-    if (
-        score >= 100
-    ) {
+    if (score >= 100) {
 
         winGame();
 
@@ -1425,20 +790,16 @@ function hitTarget() {
     }
 
 
-
     createTarget();
 
 }
 
 
-
 /*
-    GAME OVER
+GAME OVER
 */
 
-
 function gameOver() {
-
 
     playing = false;
 
@@ -1451,7 +812,6 @@ function gameOver() {
     timerInterval = null;
 
 
-
     if (target) {
 
         target.remove();
@@ -1461,17 +821,14 @@ function gameOver() {
     }
 
 
-
     if (score > best) {
 
-        best =
-            score;
+        best = score;
 
         bestElement.textContent =
             best;
 
     }
-
 
 
     gameOverTitle.textContent =
@@ -1488,19 +845,16 @@ function gameOver() {
         level;
 
 
-
     gameOverElement.classList.remove(
         "hidden"
     );
 
 
-
     statusElement.textContent =
-        "Se terminó el tiempo.";
+        "⏰ Se terminó el tiempo.";
 
 
     start.disabled = false;
-
 
     start.textContent =
         "JUGAR DE NUEVO";
@@ -1508,14 +862,11 @@ function gameOver() {
 }
 
 
-
 /*
-    VICTORIA
+VICTORIA
 */
 
-
 function winGame() {
-
 
     playing = false;
 
@@ -1528,7 +879,6 @@ function winGame() {
     timerInterval = null;
 
 
-
     if (target) {
 
         target.remove();
@@ -1538,17 +888,14 @@ function winGame() {
     }
 
 
-
     if (score > best) {
 
-        best =
-            score;
+        best = score;
 
         bestElement.textContent =
             best;
 
     }
-
 
 
     gameOverTitle.textContent =
@@ -1563,11 +910,9 @@ function winGame() {
         "Completaste los 10 niveles.";
 
 
-
     gameOverElement.classList.remove(
         "hidden"
     );
-
 
 
     statusElement.textContent =
@@ -1576,28 +921,23 @@ function winGame() {
 
     start.disabled = false;
 
-
     start.textContent =
         "JUGAR DE NUEVO";
 
 }
 
 
-
 /*
-    BOTÓN EMPEZAR
+BOTÓN EMPEZAR
 */
-
 
 start.addEventListener(
     "click",
     function() {
 
-
         if (playing) {
             return;
         }
-
 
 
         score = 0;
@@ -1605,19 +945,15 @@ start.addEventListener(
         level = 1;
 
 
-
         scoreElement.textContent =
             "0";
-
 
         levelElement.textContent =
             "1";
 
 
-
         statusElement.textContent =
             "🎯 ¡Empezá!";
-
 
 
         gameOverElement.classList.add(
@@ -1625,37 +961,29 @@ start.addEventListener(
         );
 
 
-
         playing = true;
 
 
-
         start.disabled = true;
-
 
         start.textContent =
             "JUGANDO…";
 
 
-
         createTarget();
 
     }
-
 );
 
 
-
 /*
-    SI CAMBIA EL TAMAÑO
-    DE LA PANTALLA
+SI CAMBIA EL TAMAÑO
+DE LA PANTALLA
 */
-
 
 window.addEventListener(
     "resize",
     function() {
-
 
         if (playing) {
 
@@ -1666,9 +994,7 @@ window.addEventListener(
     }
 );
 
-
 </script>
-
 
 </body>
 
