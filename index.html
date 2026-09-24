@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>Color Rush</title>
+
 
 <style>
 
@@ -12,8 +17,11 @@
     box-sizing: border-box;
 }
 
+
 body {
+
     margin: 0;
+
     min-height: 100vh;
 
     font-family: Arial, sans-serif;
@@ -21,7 +29,9 @@ body {
     color: white;
 
     display: flex;
+
     justify-content: center;
+
     align-items: center;
 
     padding: 15px;
@@ -33,47 +43,59 @@ body {
             #312e81,
             #581c87
         );
+
 }
 
 
 .game {
+
     width: 100%;
+
     max-width: 650px;
 
     padding: 20px;
 
     border-radius: 28px;
 
-    background: rgba(0,0,0,.25);
+    background:
+        rgba(0,0,0,.25);
 
     box-shadow:
         0 20px 50px rgba(0,0,0,.35);
+
 }
 
 
 .header {
+
     display: flex;
 
     justify-content: space-between;
+
     align-items: center;
 
     gap: 15px;
 
     flex-wrap: wrap;
+
 }
 
 
 h1 {
+
     margin: 0;
 
     font-size: 28px;
+
 }
 
 
 .subtitle {
+
     margin-top: 5px;
 
     opacity: .7;
+
 }
 
 
@@ -99,6 +121,7 @@ h1 {
             #22d3ee,
             #ec4899
         );
+
 }
 
 
@@ -107,6 +130,7 @@ h1 {
     opacity: .6;
 
     cursor: default;
+
 }
 
 
@@ -119,6 +143,7 @@ h1 {
     margin-top: 20px;
 
     flex-wrap: wrap;
+
 }
 
 
@@ -139,6 +164,7 @@ h1 {
 
     border:
         1px solid rgba(255,255,255,.15);
+
 }
 
 
@@ -149,6 +175,7 @@ h1 {
     opacity: .7;
 
     letter-spacing: 1px;
+
 }
 
 
@@ -159,6 +186,7 @@ h1 {
     font-weight: bold;
 
     margin-top: 4px;
+
 }
 
 
@@ -171,6 +199,7 @@ h1 {
     min-height: 20px;
 
     opacity: .9;
+
 }
 
 
@@ -202,6 +231,7 @@ h1 {
         ),
 
         rgba(0,0,0,.2);
+
 }
 
 
@@ -220,15 +250,13 @@ h1 {
     animation:
         pulse .5s infinite alternate;
 
-    transition:
-        width .2s,
-        height .2s;
 }
 
 
 .target:active {
 
     transform: scale(.7);
+
 }
 
 
@@ -245,26 +273,119 @@ h1 {
 }
 
 
+.timer {
+
+    position: absolute;
+
+    top: 10px;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(0,0,0,.35);
+
+    z-index: 5;
+
+}
+
+
+.game-over {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    padding: 20px;
+
+    background:
+        rgba(0,0,0,.75);
+
+    border-radius: 22px;
+
+    z-index: 10;
+
+}
+
+
+.game-over h2 {
+
+    font-size: 42px;
+
+    margin: 0 0 10px;
+
+}
+
+
+.game-over p {
+
+    font-size: 18px;
+
+    margin: 5px;
+
+}
+
+
+.hidden {
+
+    display: none;
+
+}
+
+
 @media(max-width:500px) {
 
     body {
+
         padding: 10px;
+
     }
+
 
     .game {
+
         padding: 15px;
+
     }
+
 
     .arena {
+
         height: 350px;
+
     }
+
 
     h1 {
+
         font-size: 24px;
+
     }
 
+
     .start {
+
         width: 100%;
+
     }
 
 }
@@ -288,7 +409,9 @@ h1 {
             <h1>🎯 Color Rush</h1>
 
             <div class="subtitle">
-                Tocá el círculo lo más rápido posible.
+
+                Tocá el círculo antes de que se acabe el tiempo.
+
             </div>
 
         </div>
@@ -297,10 +420,12 @@ h1 {
         <button
             id="start"
             class="start"
+            type="button"
         >
-            EMPEZAR
-        </button>
 
+            EMPEZAR
+
+        </button>
 
     </div>
 
@@ -356,7 +481,6 @@ h1 {
 
         </div>
 
-
     </div>
 
 
@@ -365,7 +489,9 @@ h1 {
         id="status"
         class="status"
     >
+
         Empezá en el nivel 1
+
     </div>
 
 
@@ -373,7 +499,36 @@ h1 {
     <div
         id="arena"
         class="arena"
-    ></div>
+    >
+
+        <div
+            id="timer"
+            class="timer"
+        >
+            ⏱️ 3.0
+        </div>
+
+
+        <div
+            id="gameOver"
+            class="game-over hidden"
+        >
+
+            <h2 id="gameOverTitle">
+                💀 GAME OVER
+            </h2>
+
+            <p id="finalScore">
+                Puntuación: 0
+            </p>
+
+            <p id="finalLevel">
+                Nivel: 1
+            </p>
+
+        </div>
+
+    </div>
 
 
 </div>
@@ -407,6 +562,26 @@ const statusElement =
     document.getElementById("status");
 
 
+const timerElement =
+    document.getElementById("timer");
+
+
+const gameOverElement =
+    document.getElementById("gameOver");
+
+
+const gameOverTitle =
+    document.getElementById("gameOverTitle");
+
+
+const finalScore =
+    document.getElementById("finalScore");
+
+
+const finalLevel =
+    document.getElementById("finalLevel");
+
+
 
 let score = 0;
 
@@ -418,7 +593,9 @@ let playing = false;
 
 let target = null;
 
-let moveTimer = null;
+let timerInterval = null;
+
+let timeLeft = 0;
 
 
 
@@ -459,38 +636,63 @@ const colors = [
 
 
 /*
-    CONFIGURACIÓN DE NIVELES
+    TIEMPO DE CADA NIVEL
 
-    Cada nivel aumenta
-    la velocidad y reduce
-    el tamaño del círculo.
+    Nivel 1: 3 segundos
+    Nivel 2: 3 segundos
+    Nivel 3: 2.5 segundos
+    Nivel 4: 2.5 segundos
+    Nivel 5: 2 segundos
+    Nivel 6: 2 segundos
+    Nivel 7: 1.5 segundos
+    Nivel 8: 1.5 segundos
+    Nivel 9: 1.2 segundos
+    Nivel 10: 1 segundo
 */
 
 
-function getLevelData() {
+function getTimeForLevel() {
 
+    const times = [
 
-    const size =
-        Math.max(
-            32,
-            65 - (level - 1) * 3
-        );
+        3.0,
+        3.0,
+        2.5,
+        2.5,
+        2.0,
+        2.0,
+        1.5,
+        1.5,
+        1.2,
+        1.0
 
+    ];
 
-    const speed =
-        Math.max(
-            300,
-            1500 - (level - 1) * 120
-        );
-
-
-    return {
-        size: size,
-        speed: speed
-    };
+    return times[level - 1];
 
 }
 
+
+
+/*
+    TAMAÑO DEL CÍRCULO
+*/
+
+
+function getSizeForLevel() {
+
+    return Math.max(
+        32,
+        65 - (level - 1) * 3
+    );
+
+}
+
+
+
+/*
+    CREAR CÍRCULO
+*/
 
 
 function createTarget() {
@@ -501,39 +703,48 @@ function createTarget() {
     }
 
 
-    if (!target) {
+    if (target) {
 
-        target =
-            document.createElement(
-                "button"
-            );
+        target.remove();
 
-        target.className =
-            "target";
-        
-        target.type = "button";  
-
-        target.addEventListener(
-            "click",
-            hitTarget
-        );
-
-
-        arena.appendChild(target);
+        target = null;
 
     }
 
 
-    const data =
-        getLevelData();
+    target =
+        document.createElement("button");
+
+
+    target.type = "button";
+
+
+    target.className =
+        "target";
+
+
+    target.addEventListener(
+        "click",
+        hitTarget
+    );
+
+
+    arena.appendChild(target);
+
+
+
+    const size =
+        getSizeForLevel();
+
 
 
     target.style.width =
-        data.size + "px";
+        size + "px";
 
 
     target.style.height =
-        data.size + "px";
+        size + "px";
+
 
 
     const color =
@@ -543,6 +754,7 @@ function createTarget() {
                 colors.length
             )
         ];
+
 
 
     target.style.background =
@@ -563,16 +775,19 @@ function createTarget() {
     const padding = 8;
 
 
+
     const maxX =
         arena.clientWidth -
-        data.size -
+        size -
         padding * 2;
+
 
 
     const maxY =
         arena.clientHeight -
-        data.size -
+        size -
         padding * 2;
+
 
 
     const x =
@@ -581,10 +796,12 @@ function createTarget() {
         Math.max(1, maxX);
 
 
+
     const y =
         padding +
         Math.random() *
         Math.max(1, maxY);
+
 
 
     target.style.left =
@@ -595,17 +812,85 @@ function createTarget() {
         y + "px";
 
 
-    clearTimeout(moveTimer);
+
+    startTimer();
+
+}
 
 
-    moveTimer =
-        setTimeout(
-            createTarget,
-            data.speed
+
+/*
+    TEMPORIZADOR
+*/
+
+
+function startTimer() {
+
+
+    clearInterval(timerInterval);
+
+
+    timeLeft =
+        getTimeForLevel();
+
+
+    updateTimer();
+
+
+
+    timerInterval =
+        setInterval(
+            function() {
+
+
+                timeLeft -= 0.1;
+
+
+                updateTimer();
+
+
+
+                if (timeLeft <= 0) {
+
+                    clearInterval(
+                        timerInterval
+                    );
+
+                    gameOver();
+
+                }
+
+
+            },
+            100
+
         );
 
 }
 
+
+
+/*
+    MOSTRAR TIEMPO
+*/
+
+
+function updateTimer() {
+
+    timerElement.textContent =
+        "⏱️ " +
+        Math.max(
+            0,
+            timeLeft
+        ).toFixed(1);
+
+}
+
+
+
+/*
+    CUANDO TOCA EL CÍRCULO
+*/
 
 
 function hitTarget() {
@@ -614,6 +899,13 @@ function hitTarget() {
     if (!playing) {
         return;
     }
+
+
+
+    clearInterval(
+        timerInterval
+    );
+
 
 
     score++;
@@ -625,8 +917,8 @@ function hitTarget() {
 
 
     /*
-        Cada 10 puntos
-        subimos de nivel.
+        CADA 10 PUNTOS
+        SUBE EL NIVEL
     */
 
 
@@ -637,7 +929,9 @@ function hitTarget() {
         );
 
 
+
     if (newLevel !== level) {
+
 
         level =
             newLevel;
@@ -647,35 +941,43 @@ function hitTarget() {
             level;
 
 
-        if (level <= 10) {
+
+        if (level < 10) {
 
             statusElement.textContent =
                 "🔥 ¡NIVEL " +
                 level +
-                "! Ahora es más rápido.";
+                "! Ahora tenés menos tiempo.";
+
+        }
+
+
+        else {
+
+            statusElement.textContent =
+                "🔥 ¡NIVEL 10! ¡Llegá a 100 puntos!";
 
         }
 
     }
 
 
+
     /*
-        Si llega al nivel 10
-        y consigue 100 puntos,
-        termina el juego.
+        100 PUNTOS = VICTORIA
     */
 
 
     if (
-        level === 10 &&
         score >= 100
     ) {
 
-        finishGame(true);
+        winGame();
 
         return;
 
     }
+
 
 
     createTarget();
@@ -684,16 +986,23 @@ function hitTarget() {
 
 
 
-function finishGame(won = false) {
+/*
+    GAME OVER
+*/
+
+
+function gameOver() {
 
 
     playing = false;
 
 
-    clearTimeout(moveTimer);
+    clearInterval(
+        timerInterval
+    );
 
 
-    moveTimer = null;
+    timerInterval = null;
 
 
 
@@ -709,8 +1018,8 @@ function finishGame(won = false) {
 
     if (score > best) {
 
-        best = score;
-
+        best =
+            score;
 
         bestElement.textContent =
             best;
@@ -719,33 +1028,119 @@ function finishGame(won = false) {
 
 
 
-    if (won) {
+    gameOverTitle.textContent =
+        "💀 GAME OVER";
 
-        statusElement.textContent =
-            "🏆 ¡INCREÍBLE! Completaste los 10 niveles.";
 
-    }
+    finalScore.textContent =
+        "Puntuación: " +
+        score;
 
-    else {
 
-        statusElement.textContent =
-            "🎮 Fin de la partida. Llegaste al nivel " +
-            level +
-            " con " +
-            score +
-            " puntos.";
+    finalLevel.textContent =
+        "Nivel alcanzado: " +
+        level;
 
-    }
 
+
+    gameOverElement.classList.remove(
+        "hidden"
+    );
+
+
+
+    statusElement.textContent =
+        "Se terminó el tiempo.";
 
 
     start.disabled = false;
+
 
     start.textContent =
         "JUGAR DE NUEVO";
 
 }
 
+
+
+/*
+    VICTORIA
+*/
+
+
+function winGame() {
+
+
+    playing = false;
+
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    timerInterval = null;
+
+
+
+    if (target) {
+
+        target.remove();
+
+        target = null;
+
+    }
+
+
+
+    if (score > best) {
+
+        best =
+            score;
+
+        bestElement.textContent =
+            best;
+
+    }
+
+
+
+    gameOverTitle.textContent =
+        "🏆 ¡GANASTE!";
+
+
+    finalScore.textContent =
+        "¡Llegaste a 100 puntos!";
+
+
+    finalLevel.textContent =
+        "Completaste los 10 niveles.";
+
+
+
+    gameOverElement.classList.remove(
+        "hidden"
+    );
+
+
+
+    statusElement.textContent =
+        "🔥 ¡Completaste Color Rush!";
+
+
+    start.disabled = false;
+
+
+    start.textContent =
+        "JUGAR DE NUEVO";
+
+}
+
+
+
+/*
+    BOTÓN EMPEZAR
+*/
 
 
 start.addEventListener(
@@ -758,9 +1153,11 @@ start.addEventListener(
         }
 
 
+
         score = 0;
 
         level = 1;
+
 
 
         scoreElement.textContent =
@@ -771,29 +1168,48 @@ start.addEventListener(
             "1";
 
 
+
         statusElement.textContent =
             "🎯 ¡Empezá!";
+
+
+
+        gameOverElement.classList.add(
+            "hidden"
+        );
+
 
 
         playing = true;
 
 
+
         start.disabled = true;
+
 
         start.textContent =
             "JUGANDO…";
 
 
+
         createTarget();
 
     }
+
 );
 
+
+
+/*
+    SI CAMBIA EL TAMAÑO
+    DE LA PANTALLA
+*/
 
 
 window.addEventListener(
     "resize",
     function() {
+
 
         if (playing) {
 
