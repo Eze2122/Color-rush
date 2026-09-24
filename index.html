@@ -421,109 +421,29 @@ h1 {
 
 </div>
 
-
 <script>
 
-const arena =
-    document.getElementById("arena");
+document.addEventListener("DOMContentLoaded", function () {
 
-const start =
-    document.getElementById("start");
+    const arena = document.getElementById("arena");
+    const start = document.getElementById("start");
+    const scoreElement = document.getElementById("score");
+    const levelElement = document.getElementById("level");
+    const bestElement = document.getElementById("best");
+    const statusElement = document.getElementById("status");
+    const timerElement = document.getElementById("timer");
+    const gameOverElement = document.getElementById("gameOver");
+    const gameOverTitle = document.getElementById("gameOverTitle");
+    const finalScore = document.getElementById("finalScore");
+    const finalLevel = document.getElementById("finalLevel");
 
-const scoreElement =
-    document.getElementById("score");
-
-const levelElement =
-    document.getElementById("level");
-
-const bestElement =
-    document.getElementById("best");
-
-const statusElement =
-    document.getElementById("status");
-
-const timerElement =
-    document.getElementById("timer");
-
-const gameOverElement =
-    document.getElementById("gameOver");
-
-const gameOverTitle =
-    document.getElementById("gameOverTitle");
-
-const finalScore =
-    document.getElementById("finalScore");
-
-const finalLevel =
-    document.getElementById("finalLevel");
-
-
-let score = 0;
-
-let level = 1;
-
-let best = 0;
-
-let playing = false;
-
-let target = null;
-
-let timerInterval = null;
-
-let timeLeft = 0;
-
-
-const colors = [
-
-    [
-        "#ec4899",
-        "rgba(236,72,153,.2)"
-    ],
-
-    [
-        "#22d3ee",
-        "rgba(34,211,238,.2)"
-    ],
-
-    [
-        "#facc15",
-        "rgba(250,204,21,.2)"
-    ],
-
-    [
-        "#a78bfa",
-        "rgba(167,139,250,.2)"
-    ],
-
-    [
-        "#34d399",
-        "rgba(52,211,153,.2)"
-    ],
-
-    [
-        "#fb7185",
-        "rgba(251,113,133,.2)"
-    ]
-
-];
-
-
-/*
-TIEMPO POR NIVEL
-
-1 = 3.0 segundos
-2 = 3.0 segundos
-3 = 2.5 segundos
-4 = 2.5 segundos
-5 = 2.0 segundos
-6 = 2.0 segundos
-7 = 1.5 segundos
-8 = 1.5 segundos
-9 = 1.2 segundos
-10 = 1.0 segundo
-*/
-
-function getTimeForLevel() {
+    let score = 0;
+    let level = 1;
+    let best = 0;
+    let playing = false;
+    let target = null;
+    let timerInterval = null;
+    let timeLeft = 0;
 
     const times = [
         3.0,
@@ -538,461 +458,227 @@ function getTimeForLevel() {
         1.0
     ];
 
-    return times[level - 1];
+    const colors = [
+        "#ec4899",
+        "#22d3ee",
+        "#facc15",
+        "#a78bfa",
+        "#34d399",
+        "#fb7185"
+    ];
 
-}
-
-
-/*
-TAMAÑO DEL CÍRCULO
-*/
-
-function getSizeForLevel() {
-
-    return Math.max(
-        32,
-        65 - (level - 1) * 3
-    );
-
-}
-
-
-/*
-CREAR CÍRCULO
-*/
-
-function createTarget() {
-
-    if (!playing) {
-        return;
+    function getTime() {
+        return times[level - 1];
     }
 
-
-    if (target) {
-
-        target.remove();
-
-        target = null;
-
+    function getSize() {
+        return Math.max(32, 65 - (level - 1) * 3);
     }
 
+    function createTarget() {
 
-    target =
-        document.createElement("button");
+        if (!playing) return;
 
-
-    target.type = "button";
-
-    target.className = "target";
-
-
-    target.addEventListener(
-        "click",
-        hitTarget
-    );
-
-
-    arena.appendChild(target);
-
-
-    const size =
-        getSizeForLevel();
-
-
-    target.style.width =
-        size + "px";
-
-    target.style.height =
-        size + "px";
-
-
-    const color =
-        colors[
-            Math.floor(
-                Math.random() *
-                colors.length
-            )
-        ];
-
-
-    target.style.background =
-        color[0];
-
-
-    target.style.boxShadow =
-        "0 0 0 7px " +
-        color[1] +
-        ", 0 0 30px " +
-        color[0] +
-        "aa";
-
-
-    const padding = 8;
-
-
-    const maxX =
-        arena.clientWidth -
-        size -
-        padding * 2;
-
-
-    const maxY =
-        arena.clientHeight -
-        size -
-        padding * 2;
-
-
-    const x =
-        padding +
-        Math.random() *
-        Math.max(1, maxX);
-
-
-    const y =
-        padding +
-        Math.random() *
-        Math.max(1, maxY);
-
-
-    target.style.left =
-        x + "px";
-
-    target.style.top =
-        y + "px";
-
-
-    startTimer();
-
-}
-
-
-/*
-TEMPORIZADOR
-*/
-
-function startTimer() {
-
-    clearInterval(timerInterval);
-
-
-    timeLeft =
-        getTimeForLevel();
-
-
-    updateTimer();
-
-
-    timerInterval =
-        setInterval(
-            function() {
-
-                timeLeft -= 0.1;
-
-                updateTimer();
-
-
-                if (timeLeft <= 0) {
-
-                    clearInterval(
-                        timerInterval
-                    );
-
-                    gameOver();
-
-                }
-
-            },
-            100
-        );
-
-}
-
-
-/*
-ACTUALIZAR TEMPORIZADOR
-*/
-
-function updateTimer() {
-
-    timerElement.textContent =
-        "⏱️ " +
-        Math.max(
-            0,
-            timeLeft
-        ).toFixed(1);
-
-}
-
-
-/*
-TOCAR CÍRCULO
-*/
-
-function hitTarget() {
-
-    if (!playing) {
-        return;
-    }
-
-
-    clearInterval(
-        timerInterval
-    );
-
-
-    score++;
-
-
-    scoreElement.textContent =
-        score;
-
-
-    const newLevel =
-        Math.min(
-            10,
-            Math.floor(score / 10) + 1
-        );
-
-
-    if (newLevel !== level) {
-
-        level =
-            newLevel;
-
-
-        levelElement.textContent =
-            level;
-
-
-        if (level < 10) {
-
-            statusElement.textContent =
-                "🔥 ¡NIVEL " +
-                level +
-                "! Ahora tenés menos tiempo.";
-
-        } else {
-
-            statusElement.textContent =
-                "🔥 ¡NIVEL 10! ¡Llegá a 100 puntos!";
-
+        if (target) {
+            target.remove();
         }
 
+        target = document.createElement("button");
+
+        target.type = "button";
+        target.className = "target";
+
+        const size = getSize();
+
+        target.style.width = size + "px";
+        target.style.height = size + "px";
+
+        const color =
+            colors[Math.floor(Math.random() * colors.length)];
+
+        target.style.background = color;
+
+        const maxX =
+            Math.max(1, arena.clientWidth - size - 16);
+
+        const maxY =
+            Math.max(1, arena.clientHeight - size - 16);
+
+        target.style.left =
+            (8 + Math.random() * maxX) + "px";
+
+        target.style.top =
+            (8 + Math.random() * maxY) + "px";
+
+        target.addEventListener("click", hitTarget);
+
+        arena.appendChild(target);
+
+        startTimer();
     }
 
+    function startTimer() {
 
-    if (score >= 100) {
+        clearInterval(timerInterval);
 
-        winGame();
+        timeLeft = getTime();
 
-        return;
+        updateTimer();
 
+        timerInterval = setInterval(function () {
+
+            timeLeft -= 0.1;
+
+            updateTimer();
+
+            if (timeLeft <= 0) {
+
+                clearInterval(timerInterval);
+
+                gameOver();
+            }
+
+        }, 100);
     }
 
+    function updateTimer() {
 
-    createTarget();
-
-}
-
-
-/*
-GAME OVER
-*/
-
-function gameOver() {
-
-    playing = false;
-
-
-    clearInterval(
-        timerInterval
-    );
-
-
-    timerInterval = null;
-
-
-    if (target) {
-
-        target.remove();
-
-        target = null;
-
+        timerElement.textContent =
+            "⏱️ " + Math.max(0, timeLeft).toFixed(1);
     }
 
+    function hitTarget() {
 
-    if (score > best) {
+        if (!playing) return;
 
-        best = score;
+        clearInterval(timerInterval);
 
-        bestElement.textContent =
-            best;
+        score++;
 
-    }
+        scoreElement.textContent = score;
 
+        const newLevel =
+            Math.min(10, Math.floor(score / 10) + 1);
 
-    gameOverTitle.textContent =
-        "💀 GAME OVER";
+        if (newLevel !== level) {
 
+            level = newLevel;
 
-    finalScore.textContent =
-        "Puntuación: " +
-        score;
+            levelElement.textContent = level;
 
+            if (level < 10) {
 
-    finalLevel.textContent =
-        "Nivel alcanzado: " +
-        level;
+                statusElement.textContent =
+                    "🔥 ¡NIVEL " + level +
+                    "! Ahora tenés menos tiempo.";
 
+            } else {
 
-    gameOverElement.classList.remove(
-        "hidden"
-    );
+                statusElement.textContent =
+                    "🔥 ¡NIVEL 10! ¡Llegá a 100 puntos!";
+            }
+        }
 
+        if (score >= 100) {
 
-    statusElement.textContent =
-        "⏰ Se terminó el tiempo.";
+            winGame();
 
-
-    start.disabled = false;
-
-    start.textContent =
-        "JUGAR DE NUEVO";
-
-}
-
-
-/*
-VICTORIA
-*/
-
-function winGame() {
-
-    playing = false;
-
-
-    clearInterval(
-        timerInterval
-    );
-
-
-    timerInterval = null;
-
-
-    if (target) {
-
-        target.remove();
-
-        target = null;
-
-    }
-
-
-    if (score > best) {
-
-        best = score;
-
-        bestElement.textContent =
-            best;
-
-    }
-
-
-    gameOverTitle.textContent =
-        "🏆 ¡GANASTE!";
-
-
-    finalScore.textContent =
-        "¡Llegaste a 100 puntos!";
-
-
-    finalLevel.textContent =
-        "Completaste los 10 niveles.";
-
-
-    gameOverElement.classList.remove(
-        "hidden"
-    );
-
-
-    statusElement.textContent =
-        "🔥 ¡Completaste Color Rush!";
-
-
-    start.disabled = false;
-
-    start.textContent =
-        "JUGAR DE NUEVO";
-
-}
-
-
-/*
-BOTÓN EMPEZAR
-*/
-
-start.addEventListener(
-    "click",
-    function() {
-
-        if (playing) {
             return;
         }
 
+        createTarget();
+    }
 
-        score = 0;
+    function gameOver() {
 
-        level = 1;
+        playing = false;
 
+        clearInterval(timerInterval);
 
-        scoreElement.textContent =
-            "0";
+        if (target) {
+            target.remove();
+            target = null;
+        }
 
-        levelElement.textContent =
-            "1";
+        if (score > best) {
+            best = score;
+            bestElement.textContent = best;
+        }
 
+        gameOverTitle.textContent = "💀 GAME OVER";
+
+        finalScore.textContent =
+            "Puntuación: " + score;
+
+        finalLevel.textContent =
+            "Nivel alcanzado: " + level;
+
+        gameOverElement.classList.remove("hidden");
 
         statusElement.textContent =
-            "🎯 ¡Empezá!";
+            "⏰ Se terminó el tiempo.";
 
+        start.disabled = false;
 
-        gameOverElement.classList.add(
-            "hidden"
-        );
+        start.textContent = "JUGAR DE NUEVO";
+    }
 
+    function winGame() {
 
+        playing = false;
+
+        clearInterval(timerInterval);
+
+        if (target) {
+            target.remove();
+            target = null;
+        }
+
+        if (score > best) {
+            best = score;
+            bestElement.textContent = best;
+        }
+
+        gameOverTitle.textContent = "🏆 ¡GANASTE!";
+
+        finalScore.textContent =
+            "¡Llegaste a 100 puntos!";
+
+        finalLevel.textContent =
+            "Completaste los 10 niveles.";
+
+        gameOverElement.classList.remove("hidden");
+
+        statusElement.textContent =
+            "🔥 ¡Completaste Color Rush!";
+
+        start.disabled = false;
+
+        start.textContent = "JUGAR DE NUEVO";
+    }
+
+    start.addEventListener("click", function () {
+
+        score = 0;
+        level = 1;
         playing = true;
 
+        scoreElement.textContent = "0";
+        levelElement.textContent = "1";
+
+        statusElement.textContent =
+            "🎯 ¡Tocá el círculo!";
+
+        gameOverElement.classList.add("hidden");
 
         start.disabled = true;
 
-        start.textContent =
-            "JUGANDO…";
-
+        start.textContent = "JUGANDO…";
 
         createTarget();
+    });
 
-    }
-);
-
-
-/*
-SI CAMBIA EL TAMAÑO
-DE LA PANTALLA
-*/
-
-window.addEventListener(
-    "resize",
-    function() {
-
-        if (playing) {
-
-            createTarget();
-
-        }
-
-    }
-);
+});
 
 </script>
 
